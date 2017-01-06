@@ -9,21 +9,22 @@
 	<body>
         <script>
 
-        var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        var margin = {top: 20, right: 20, bottom: 100, left: 100},
             width = 960 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
         var parseTime = d3.time.format("%Y-%m-%d").parse;
 
-        var x = d3.scale.linear().range([0, width]);
+        var x = d3.time.scale().range([0, width]);
         var y = d3.scale.linear().range([height, 0]);
 
         var color = d3.scale.category10();
 
         var xAxis = d3.svg.axis()
             .scale(x)
-            .orient("bottom");
-            //.tickFormat(d3.time.format("%Y-%m-%d")); //<== insert the tickFormat function
+            .orient("bottom")
+            .ticks(15)
+            .tickFormat(d3.time.format("%Y-%m")); //<== insert the tickFormat function
 
         var yAxis = d3.svg.axis()
             .scale(y)
@@ -50,19 +51,18 @@
           console.log(data[1]);
 
           x.domain(d3.extent(data, function(d) { return d.date; })).nice();
-          y.domain(d3.extent(data, function(d) { return d.pce; })).nice();
-
+          y.domain(d3.extent(data, function(d) { return d.pce;  })).nice();
 
           svg.append("g")
               .attr("class", "x axis")
               .attr("transform", "translate(0," + height + ")")
               .call(xAxis)
-            .append("text")
-              .attr("class", "label")
-              .attr("x", width)
-              .attr("y", -6)
-              .style("text-anchor", "end")
-              .text("Date");
+            .selectAll("text")
+              .attr("y", 6)
+              .attr("x", 5)
+              .attr("dy", ".35em")
+              .attr("transform", "rotate(45)")
+              .style("text-anchor", "start");
 
           svg.append("g")
               .attr("class", "y axis")
@@ -79,7 +79,7 @@
               .data(data)
             .enter().append("circle")
               .attr("class", "dot")
-              .attr("r", 3.5)
+              .attr("r", 2)
               .attr("cx", function(d) { return x(d.date); })
               .attr("cy", function(d) { return y(d.pce); });
               //.style("fill", function(d) { return color(d.species); });
