@@ -1,14 +1,15 @@
 body {
   font: 10px sans-serif;
+
 }
 
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+label {
+    color: "pink";
 }
 
-.dot {
-  stroke: #000;
+path
+{
+    fill: none;
+    stroke: #000;
+    color: "pink";
 }
