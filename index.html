@@ -33,12 +33,18 @@
         var line = d3.svg.line()
                 .x(function(d) { return x(d.date); })
                 .y(function(d) { return y(d.pce); });
-
+/*
+				var line = d3.svg.line()
+  .interpolate("cardinal")
+  .x(function(d,i) {return x(i);})
+  .y(function(d) {return y(d);})
+*/
         var svg = d3.select("body").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 
       //---------------------------------------------------------------------------------
       //------------- EVERYTHING BELOW HERE IS IN THE D3.CSV FUNCTION -------------------
@@ -76,13 +82,11 @@
               .attr("y", 6)
               .attr("dy", ".71em")
               .style("text-anchor", "end")
-              .text("Price")
+              .text("Price");
 
          svg.append("path")
                 .datum(data)
                 .attr("class", "line")
-                .attr("fill", "none")
-                .attr("stroke", "#000")
                 .attr("d", line);
 
         });

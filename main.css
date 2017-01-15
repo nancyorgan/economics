@@ -11,5 +11,11 @@ path
 {
     fill: none;
     stroke: #000;
-    color: "pink";
+    background-color: "pink";
+}
+
+.line {
+  fill: none;
+  stroke: pink;
+  stroke-width: 3.5px;
 }
