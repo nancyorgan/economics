@@ -31,6 +31,7 @@
             .orient("left");
 
         var line = d3.svg.line()
+				.interpolate("basis")
                 .x(function(d) { return x(d.date); })
                 .y(function(d) { return y(d.pce); });
 /*
@@ -44,7 +45,6 @@
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
       //---------------------------------------------------------------------------------
       //------------- EVERYTHING BELOW HERE IS IN THE D3.CSV FUNCTION -------------------
@@ -84,11 +84,28 @@
               .style("text-anchor", "end")
               .text("Price");
 
-         svg.append("path")
-                .datum(data)
-                .attr("class", "line")
-                .attr("d", line);
+		  var path = svg.append("path")
+				.datum(data)
+				.attr("class", "line")
+				.attr("d", line);
+
+
+	   var totalLength = path.node().getTotalLength();
+
+		path.attr("stroke-dasharray", totalLength + " " + totalLength)
+	      .attr("stroke-dashoffset", totalLength)
+	      .transition()
+	        .duration(5000)
+	        .ease("linear")
+	        .attr("stroke-dashoffset", 0);
+
+	    svg.on("click", function(){
+	      path.transition()
+	        .duration(2000)
+	        .ease("linear")
+	        .attr("stroke-dashoffset", totalLength);
+
 
         });
-
-</script>
+	});
+	</script>
