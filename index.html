@@ -53,9 +53,7 @@
             d.date = parseTime(d.date);
             d.pce = +d.pce;
           });
-
-          console.log(data[1]);
-
+		  
           x.domain(d3.extent(data, function(d) { return d.date; })).nice();
           y.domain(d3.extent(data, function(d) { return d.pce;  })).nice();
 
@@ -86,7 +84,6 @@
 				.attr("class", "line")
 				.attr("d", line);
 
-
 	   var totalLength = path.node().getTotalLength();
 
 		path.attr("stroke-dasharray", totalLength + " " + totalLength)
@@ -95,10 +92,12 @@
 	        .duration(5000)
 	        .ease("linear")
 	        .attr("stroke-dashoffset", 0);
+
+	    path.exit().remove();
 	});
 };
 
-nancyschart("data/economics")
+//nancyschart("data/economics")
 
 
 var controls = d3.select("body")
@@ -117,6 +116,7 @@ sort_btn.on("click", function(){
 	if(state === 0){
 		state = 1;
 		txt += "Forward";
+		nancyschart("data/economics");
 	} else if(state === 1){
 		state = 0;
 		txt += "Backwards";
