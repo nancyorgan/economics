@@ -34,13 +34,9 @@
 				.interpolate("basis")
                 .x(function(d) { return x(d.date); })
                 .y(function(d) { return y(d.pce); });
-/*
-				var line = d3.svg.line()
-  .interpolate("cardinal")
-  .x(function(d,i) {return x(i);})
-  .y(function(d) {return y(d);})
-*/
-        var svg = d3.select("body").append("svg")
+
+        var svg = d3.select("body")
+		 .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
@@ -49,7 +45,8 @@
       //---------------------------------------------------------------------------------
       //------------- EVERYTHING BELOW HERE IS IN THE D3.CSV FUNCTION -------------------
       //---------------------------------------------------------------------------------
-        d3.csv("data/economics", function(error, data) {
+        var nancyschart = function(csvFile){
+		d3.csv(csvFile, function(error, data) {
           if (error) throw error;
 
           data.forEach(function(d) {
@@ -98,14 +95,34 @@
 	        .duration(5000)
 	        .ease("linear")
 	        .attr("stroke-dashoffset", 0);
-
-	    svg.on("click", function(){
-	      path.transition()
-	        .duration(2000)
-	        .ease("linear")
-	        .attr("stroke-dashoffset", totalLength);
-
-
-        });
 	});
+};
+
+nancyschart("data/economics")
+
+
+var controls = d3.select("body")
+				.append("div")
+				.attr("id", "controls");
+
+var sort_btn = controls.append("button")
+					  .html("Start!")
+					  .attr("class", "dataset-button")
+					  .attr("state", 0);
+
+sort_btn.on("click", function(){
+	var self = d3.select(this);
+	var state = +self.attr("state")
+	var txt = "Going ";
+	if(state === 0){
+		state = 1;
+		txt += "Forward";
+	} else if(state === 1){
+		state = 0;
+		txt += "Backwards";
+	}
+	self.attr("state", state);
+	self.html(txt);
+});
+
 	</script>
